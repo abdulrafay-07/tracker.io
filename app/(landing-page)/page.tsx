@@ -8,7 +8,7 @@ const Home = () => {
       <div className='flex flex-col gap-8 xl:gap-4 xl:flex-row xl:justify-evenly h-full w-full'>
         <div className='flex flex-col py-20'>
           <h1 className='text-6xl font-bold space-x-20'>
-            <span className='text-7xl'>Track</span> your X's with <br />
+            <span className='text-7xl'>Track</span> your X&apos;s with <br />
             <TypeAnimation
               text='tracker.io'
               className='text-8xl text-[#AFB10B]'
