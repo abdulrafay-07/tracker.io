@@ -12,7 +12,7 @@ export const Navbar = () => {
    return (
       <>
          <Link href='https://github.com/abdulrafay-07' target='_blank'>
-            <Github className='top-0 right-0 px-4 pt-3 h-16 w-16 absolute z-[100]' />
+            <Github className='hidden md:block top-0 right-0 px-4 pt-3 h-16 w-16 absolute z-[100]' />
          </Link>
          <div className='top-0 right-0 left-0 absolute flex items-center lg:items-end justify-between md:justify-evenly text-neutral-900 bg-white py-3.5 px-3 lg:px-5 shadow-md z-50'>
             
