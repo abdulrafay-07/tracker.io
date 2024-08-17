@@ -1,6 +1,6 @@
 const Home = () => {
     return (
-      <div className='flex flex-col justify-center items-center h-full bg-neutral-900 text-gray-100 gap-2'>
+      <div className='flex flex-col justify-center items-center h-full gap-2 bg-gray-100'>
         <h1 className='text-7xl font-bold'>
           tracker.io
         </h1>
