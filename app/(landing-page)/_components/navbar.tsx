@@ -9,7 +9,7 @@ import { Github } from 'lucide-react';
 export const Navbar = () => {
    const url = usePathname();
 
-   return (
+   return !url.startsWith('/dashboard') && (
       <>
          <Link href='https://github.com/abdulrafay-07' target='_blank'>
             <Github className='hidden md:block top-0 right-0 px-4 pt-3 h-16 w-16 absolute z-[100]' />
