@@ -1,11 +1,8 @@
-import { UserButton } from '@clerk/nextjs';
-
 const Dashboard = () => {
     return (
-        <div className='flex justify-between'>
-            Dashboard
-            <UserButton />
-        </div>
+        <h1 className='h-full flex justify-center items-center pt-32 font-bold text-6xl'>
+            Coming Soon...
+        </h1>
     )
 };
 

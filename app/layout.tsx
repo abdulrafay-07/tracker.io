@@ -13,6 +13,9 @@ const font = Montserrat({
 export const metadata: Metadata = {
   title: 'tracker.io',
   description: "Track your X's",
+  icons: {
+    icon: ['/logo.png'],
+  },
 };
 
 export default function RootLayout({
