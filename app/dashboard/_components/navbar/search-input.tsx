@@ -1,7 +1,7 @@
 'use client'
 
 import { ChangeEvent, useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 import { useDebounceValue } from 'usehooks-ts';
 import qs from 'query-string';
@@ -13,6 +13,7 @@ export const SearchInput = () => {
     const [value, setValue] = useState('');
 
     const router = useRouter();
+    const path = usePathname();
 
     const [debouncedValue, _] = useDebounceValue<string>(value, 500);
     
@@ -22,7 +23,7 @@ export const SearchInput = () => {
 
     useEffect(() => {
         const url = qs.stringifyUrl({
-            url: '/dashboard',
+            url: path,
             query: {
                 search: debouncedValue,
             },

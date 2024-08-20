@@ -23,16 +23,20 @@ export const Navbar = () => {
                tracker.io
             </Link>
             <div className='flex gap-2'>
-               <Button variant={url === '/sign-up' ? 'default' : url === '/' ? 'ghost' : url === '/sign-in' ? 'ghost' : 'default'}>
-                  <Link href='/sign-in'>
+               <Link href='/sign-in'>
+                  <Button
+                     variant={url === '/sign-up' ? 'default' : url === '/' ? 'ghost' : url === '/sign-in' ? 'ghost' : 'default'}
+                  >
                      Sign in
-                  </Link>
-               </Button>
-               <Button variant={url === '/sign-in' ? 'default' : url === '/' ? 'default' : 'ghost'}>
-                  <Link href='/sign-up'>
+                  </Button>
+               </Link>
+               <Link href='/sign-up'>
+                  <Button
+                     variant={url === '/sign-in' ? 'default' : url === '/' ? 'default' : 'ghost'}
+                  >
                      Sign up
-                  </Link>
-               </Button>
+                  </Button>
+               </Link>
             </div>
          </div>
       </>
