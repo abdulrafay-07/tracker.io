@@ -11,5 +11,5 @@ export interface ExpenseStore {
    totalSpent: number;
    isFetched: boolean;
    fetchTotalSpent: (userId: string) => void;
-   addExpense: (expense: Expense) => void;
+   addToTotalSpent: (expense: Expense) => void;
 };

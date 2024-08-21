@@ -19,7 +19,7 @@ export async function DELETE(request: NextRequest) {
          message: 'Expense deleted successfully.',
          expense: deletedExpense,
       }, {
-         status: 404,
+         status: 200,
       });
    } catch (error) {
       return NextResponse.json({

@@ -20,7 +20,7 @@ export const useExpenseStore = create<ExpenseStore>((set) => ({
          console.log('Failed to fetch total spent', error);
       };
    },
-   addExpense: (expense: Expense) => {
+   addToTotalSpent: (expense: Expense) => {
       set((state) => {
          state.totalSpent = parseFloat(state.totalSpent.toString());
          return {
