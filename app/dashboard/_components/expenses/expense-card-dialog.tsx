@@ -27,11 +27,14 @@ import axios, { AxiosError } from 'axios';
 
 import { createExpense } from '@/form-schemas/expenses';
 import { ApiResponse } from '@/types/api-response';
+import { useExpenseStore } from '@/store/expense';
 
 export const ExpenseCardDialog = () => {
    const [isDialogOpen, setIsDialogOpen] = useState(false);
    const [isSubmitting, setIsSubmitting] = useState(false);
    const { userId } = useAuth();
+
+   const { addExpense } = useExpenseStore();
 
    const { toast } = useToast();
 
@@ -54,6 +57,7 @@ export const ExpenseCardDialog = () => {
             title: 'Success!',
             description: response.data.message,
          });
+         addExpense(response.data.expense!);
       } catch (error) {
          const axiosError = error as AxiosError<ApiResponse>;
          toast({

@@ -2,11 +2,6 @@
 
 import { useEffect, useState } from 'react';
 
-import { useAuth } from '@clerk/nextjs';
-import axios, { AxiosError } from 'axios';
-
-import { ApiResponse } from '@/types/api-response';
-
 import {
    Accordion,
    AccordionContent,
@@ -16,32 +11,24 @@ import {
 import { TotalSpentCard } from './total-spent-card';
 import { ExpenseCardDialog } from './expense-card-dialog';
 
+import { useAuth } from '@clerk/nextjs';
+import { useExpenseStore } from '@/store/expense';
+
 export const AccordionExpense = () => {
    const [isFetching, setIsFetching] = useState(true);
-   const [totalSpent, setTotalSpent] = useState(0);
+   const { totalSpent, isFetched, fetchTotalSpent } = useExpenseStore();
+
    const { userId } = useAuth();
 
-   const fetchTotalSpent = async () => {
-      setIsFetching(true);
-      try {
-         const response = await axios.post<ApiResponse>('/api/get-total-spent', {userId});
-
-         if (!response.data.success) {
-            throw Error;
-         };
-
-         setTotalSpent(response.data.totalSpent!);
-      } catch (error) {
-         const axiosError = error as AxiosError<ApiResponse>;
-         console.log(axiosError.response?.data.message);
-      } finally {
+   useEffect(() => {
+      if (!isFetched) {
+         fetchTotalSpent(userId!);
+      };
+      
+      if (isFetched) {
          setIsFetching(false);
       };
-   };
-
-   useEffect(() => {
-      fetchTotalSpent();
-   }, []);
+   }, [isFetched]);
 
    return (
       <Accordion type='single' collapsible className='w-full'>
