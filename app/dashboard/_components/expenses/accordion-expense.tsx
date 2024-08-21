@@ -16,19 +16,19 @@ import { useExpenseStore } from '@/store/expense';
 
 export const AccordionExpense = () => {
    const [isFetching, setIsFetching] = useState(true);
-   const { totalSpent, isFetched, fetchTotalSpent } = useExpenseStore();
+   const { totalSpent, totalSpentFetched, fetchTotalSpent } = useExpenseStore();
 
    const { userId } = useAuth();
 
    useEffect(() => {
-      if (!isFetched) {
+      if (!totalSpentFetched) {
          fetchTotalSpent(userId!);
       };
       
-      if (isFetched) {
+      if (totalSpentFetched) {
          setIsFetching(false);
       };
-   }, [isFetched]);
+   }, [totalSpentFetched]);
 
    return (
       <Accordion type='single' collapsible className='w-full'>

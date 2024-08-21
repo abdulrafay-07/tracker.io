@@ -12,43 +12,36 @@ import {
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
+import { EmptyExpense } from './empty-expense';
 import { Edit, Loader2, Trash2 } from 'lucide-react';
 
 import axios, { AxiosError } from 'axios';
 import { useAuth } from '@clerk/nextjs';
 
-import { Expense } from '@/types/expense';
 import { ApiResponse } from '@/types/api-response';
+import { useExpenseStore } from '@/store/expense';
 
 export const ExpenseTable = () => {
+   const [isDeleting, setIsDeleting] = useState(false);
    const [isFetching, setIsFetching] = useState(true);
-   const [expenses, setExpenses] = useState<Expense[]>();
+   const { expenses, fetchUserExpenses, expensesFetched, removeFromUserExpense, removeFromTotalSpent } = useExpenseStore();
 
    const { userId } = useAuth();
 
    const { toast } = useToast();
 
-   const fetchUserExpenses = async () => {
-      setIsFetching(true);
-      try {
-         const response = await axios.post<ApiResponse>('/api/get-user-expenses', { userId });
+   useEffect(() => {
+      if (!expensesFetched) {
+         fetchUserExpenses(userId!);
+      };
 
-         if (response.data.success) {
-            setExpenses(response.data.expenses);
-         };
-      } catch (error) {
-         const axiosError = error as AxiosError<ApiResponse>;
-         console.log(axiosError.response?.data.message);
-      } finally {
+      if (expensesFetched) {
          setIsFetching(false);
       };
-   };
-
-   useEffect(() => {
-      fetchUserExpenses();
-   }, []);
+   }, [expensesFetched]);
 
    const handleDelete = async (id: string) => {
+      setIsDeleting(true);
       try {
          const response = await axios.delete<ApiResponse>('/api/delete-user-expense', {data: {id}});
 
@@ -58,7 +51,8 @@ export const ExpenseTable = () => {
                description: response.data.message,
             });
 
-            fetchUserExpenses();
+            removeFromUserExpense(response.data.expense!);
+            removeFromTotalSpent(response.data.expense!);
          };
       } catch (error) {
          const axiosError = error as AxiosError<ApiResponse>;
@@ -67,6 +61,8 @@ export const ExpenseTable = () => {
             description: axiosError.response?.data.message,
             variant: 'destructive',
          });
+      } finally {
+         setIsDeleting(false);
       };
    };
 
@@ -74,7 +70,7 @@ export const ExpenseTable = () => {
       return <Loader2 className='h-10 w-10 animate-spin self-center my-10' />
    };
 
-   return expenses ? (
+   return expenses && expenses.length != 0 ? (
       <Table className='w-full my-8'>
          <TableHeader>
             <TableRow>
@@ -111,6 +107,7 @@ export const ExpenseTable = () => {
                         size='icon'
                         variant='ghost'
                         onClick={() => handleDelete(expense.id)}
+                        disabled={isDeleting}
                      >
                         <Trash2 className='h-5 w-5' />
                      </Button>
@@ -120,6 +117,6 @@ export const ExpenseTable = () => {
          </TableBody>
       </Table>
    ) : (
-      <h1 className='text-center text-xl'>No expenses found</h1>
+      <EmptyExpense />
    )
 };

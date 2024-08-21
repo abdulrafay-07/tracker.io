@@ -9,7 +9,13 @@ export interface Expense {
 
 export interface ExpenseStore {
    totalSpent: number;
-   isFetched: boolean;
+   totalSpentFetched: boolean;
+   expenses: Expense[];
+   expensesFetched: boolean;
    fetchTotalSpent: (userId: string) => void;
    addToTotalSpent: (expense: Expense) => void;
+   removeFromTotalSpent: (expense: Expense) => void;
+   fetchUserExpenses: (userId: string) => void;
+   addToUserExpense: (expense: Expense) => void;
+   removeFromUserExpense: (expense: Expense) => void;
 };

@@ -34,7 +34,7 @@ export const ExpenseCardDialog = () => {
    const [isSubmitting, setIsSubmitting] = useState(false);
    const { userId } = useAuth();
 
-   const { addToTotalSpent } = useExpenseStore();
+   const { addToTotalSpent, addToUserExpense } = useExpenseStore();
 
    const { toast } = useToast();
 
@@ -58,7 +58,9 @@ export const ExpenseCardDialog = () => {
             description: response.data.message,
          });
          addToTotalSpent(response.data.expense!);
+         addToUserExpense(response.data.expense!);
       } catch (error) {
+         console.log(error);
          const axiosError = error as AxiosError<ApiResponse>;
          toast({
             title: 'Failed!',

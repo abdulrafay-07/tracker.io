@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
          message: 'Expense created successfully.',
          expense: newExpense,
       }, {
-         status: 201,
+         status: 200,
       });
    } catch (error) {
       return NextResponse.json({
