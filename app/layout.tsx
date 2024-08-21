@@ -5,6 +5,7 @@ import './globals.css';
 import { ClerkProvider } from '@clerk/nextjs';
 
 import { Navbar } from './(landing-page)/_components/navbar';
+import { Toaster } from '@/components/ui/toaster';
 
 const font = Montserrat({
   subsets: ['latin']
@@ -27,6 +28,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang='en'>
         <body className={font.className}>
+          <Toaster />
           <Navbar />
           {children}
         </body>
