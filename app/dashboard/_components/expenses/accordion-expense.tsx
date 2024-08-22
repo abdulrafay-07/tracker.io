@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/accordion';
 import { TotalSpentCard } from './total-spent-card';
 import { ExpenseCardDialog } from './expense-card-dialog';
+import { CreateExpenseCard } from './create-expense-card';
 
 import { useAuth } from '@clerk/nextjs';
 import { useExpenseStore } from '@/store/expense';
@@ -41,7 +42,11 @@ export const AccordionExpense = () => {
                   isFetching={isFetching}
                   totalSpent={totalSpent}
                />
-               <ExpenseCardDialog />
+               <ExpenseCardDialog
+                  trigger={CreateExpenseCard}
+                  title='Create an expense'
+                  description='Create an expense here. Click save when you&apos;re done.'
+               />
             </AccordionContent>
          </AccordionItem>
       </Accordion>

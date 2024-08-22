@@ -6,7 +6,7 @@ import { Expense, ExpenseStore } from '@/types/expense';
 import { ApiResponse } from '@/types/api-response';
 
 export const useExpenseStore = create<ExpenseStore>((set) => ({
-   totalSpent: 0,
+   totalSpent: '0',
    totalSpentFetched: false,
    expenses: [],
    expensesFetched: false,
@@ -15,7 +15,7 @@ export const useExpenseStore = create<ExpenseStore>((set) => ({
          const response = await axios.post<ApiResponse>('/api/get-total-spent', { userId });
 
          set({
-            totalSpent: response.data.totalSpent,
+            totalSpent: response.data.totalSpent.toString(),
             totalSpentFetched: true,
          });
       } catch (error) {
@@ -24,17 +24,19 @@ export const useExpenseStore = create<ExpenseStore>((set) => ({
    },
    addToTotalSpent: (expense: Expense) => {
       set((state) => {
-         const updatedTotalSpent = parseFloat((state.totalSpent + expense.amount).toFixed(2));
+         const toFloat = parseFloat(state.totalSpent);
+         const updatedTotalSpent = toFloat + expense.amount;
          return {
-            totalSpent: updatedTotalSpent,
+            totalSpent: updatedTotalSpent.toFixed(2),
          };
       });
    },
    removeFromTotalSpent: (expense: Expense) => {
       set((state) => {
-         const updatedTotalSpent = parseFloat((state.totalSpent - expense.amount).toFixed(2));
+         const toFloat = parseFloat(state.totalSpent);
+         const updatedTotalSpent = toFloat - expense.amount;
          return {
-            totalSpent: updatedTotalSpent,
+            totalSpent: updatedTotalSpent.toFixed(2),
          };
       });
    },
@@ -62,6 +64,19 @@ export const useExpenseStore = create<ExpenseStore>((set) => ({
       set((state) => {
          return {
             expenses: state.expenses.filter((exp) => exp.id != expense.id),
+         };
+      });
+   },
+   updateUserExpense: (expense: Expense) => {
+      set((state) => {
+         const index = state.expenses.findIndex(exp => exp.id = expense.id);
+         
+         if (!index) {
+            state.expenses[index] = { ...state.expenses[index], name: expense.name, amount: expense.amount}
+         };
+
+         return {
+            expenses: state.expenses,
          };
       });
    },

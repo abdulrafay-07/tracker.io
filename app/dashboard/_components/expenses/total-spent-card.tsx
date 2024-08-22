@@ -2,7 +2,7 @@ import { Loader2 } from 'lucide-react';
 
 interface TotalSpentCardProps {
    isFetching: boolean;
-   totalSpent: number;
+   totalSpent: string;
 };
 
 export const TotalSpentCard = ({

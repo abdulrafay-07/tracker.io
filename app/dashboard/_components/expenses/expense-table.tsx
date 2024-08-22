@@ -13,6 +13,8 @@ import {
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import { EmptyExpense } from './empty-expense';
+import { ExpenseCardDialog } from './expense-card-dialog';
+import { EditExpense } from './edit-expense';
 import { Edit, Loader2, Trash2 } from 'lucide-react';
 
 import axios, { AxiosError } from 'axios';
@@ -98,9 +100,12 @@ export const ExpenseTable = () => {
                      ${expense.amount}
                   </TableCell>
                   <TableCell>
-                     <Button size='icon' variant='ghost'> {/* TODO: Add edit functionality */}
-                        <Edit className='h-5 w-5' />
-                     </Button>
+                     <ExpenseCardDialog
+                        trigger={EditExpense}
+                        title='Edit an expense'
+                        description='Update an expense here. Click update when you&apos;re done.'
+                        expense={expense}
+                     />
                   </TableCell>
                   <TableCell>
                      <Button

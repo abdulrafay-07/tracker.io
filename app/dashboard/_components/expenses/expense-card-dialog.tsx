@@ -16,7 +16,6 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/components/ui/use-toast';
-import { CreateExpenseCard } from './create-expense-card';
 import { Loader2 } from 'lucide-react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -27,24 +26,37 @@ import axios, { AxiosError } from 'axios';
 
 import { createExpense } from '@/form-schemas/expenses';
 import { ApiResponse } from '@/types/api-response';
+import { Expense } from '@/types/expense';
 import { useExpenseStore } from '@/store/expense';
 
-export const ExpenseCardDialog = () => {
+interface ExpenseCardDialogProps {
+   trigger: React.FC;
+   title: string;
+   description: string;
+   expense?: Expense;
+};
+
+export const ExpenseCardDialog = ({
+   trigger: TriggerComponent,
+   title,
+   description,
+   expense,
+}: ExpenseCardDialogProps) => {
    const [isDialogOpen, setIsDialogOpen] = useState(false);
    const [isSubmitting, setIsSubmitting] = useState(false);
    const { userId } = useAuth();
 
-   const { addToTotalSpent, addToUserExpense } = useExpenseStore();
+   const { addToTotalSpent, addToUserExpense, updateUserExpense, fetchTotalSpent } = useExpenseStore();
 
    const { toast } = useToast();
 
    const form = useForm<z.infer<typeof createExpense>>({
       resolver: zodResolver(createExpense),
       defaultValues: {
-         userId: userId!,
-         name: '',
-         amount: 0,
-         createdAt: new Date(),
+         userId: expense?.userId || userId!,
+         name: expense?.name || '',
+         amount: expense?.amount || 0,
+         createdAt: expense?.createdAt || new Date(),
       },
    });
 
@@ -81,19 +93,61 @@ export const ExpenseCardDialog = () => {
       form.handleSubmit(onSubmit)();
    };
 
+   // TEMP: when updating expense, onSubmit wasn't getting called so this is a temp fix.
+   const submitForm = async (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      setIsSubmitting(true);
+      const name = form.getValues('name');
+      const amount = form.getValues('amount');
+      try {
+         const response = await axios.patch<ApiResponse>('/api/update-user-expense', 
+            {
+               id: expense?.id,
+               name: name,
+               amount: amount,
+            },
+         );
+
+         toast({
+            title: 'Success!',
+            description: response.data.message,
+         });
+
+         const expenseObj = { ...expense!, name: name, amount: amount };
+         
+         fetchTotalSpent(userId!);
+         updateUserExpense(expenseObj);
+      } catch (error) {
+         console.log(error);
+         const axiosError = error as AxiosError<ApiResponse>;
+         toast({
+            title: 'Failed!',
+            description: axiosError.response?.data.message,
+            variant: 'destructive',
+         });
+      } finally {
+         setIsSubmitting(false);
+         setIsDialogOpen(false);
+      };
+   };
+
    return (
       <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
          <AlertDialogTrigger>
-            <CreateExpenseCard />
+            <TriggerComponent />
          </AlertDialogTrigger>
          <AlertDialogContent className='max-w-xl'>
             <AlertDialogHeader>
-               <AlertDialogTitle>Create an expense</AlertDialogTitle>
+               <AlertDialogTitle>
+                  {title}
+               </AlertDialogTitle>
                <AlertDialogDescription>
-                  Create an expense here. Click save when you're done.
+                  {description}
                </AlertDialogDescription>
             </AlertDialogHeader>
-            <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6 w-full'>
+            <form className='space-y-6 w-full'>
                {form.formState.errors.root && (
                   <p className='text-red-600 text-sm'>
                      {form.formState.errors.root?.message}
@@ -144,7 +198,8 @@ export const ExpenseCardDialog = () => {
                      Cancel
                   </AlertDialogCancel>
                   <AlertDialogAction
-                     onClick={handleActionClick}
+                     onClick={expense ? submitForm : handleActionClick}
+                     type='submit'
                      disabled={isSubmitting}
                      className='w-full sm:w-[80px]'
                   >
@@ -152,7 +207,7 @@ export const ExpenseCardDialog = () => {
                         <Loader2 className='animate-spin' />
                      ) : (
                         <>
-                           Create
+                           {expense ? 'Update' : 'Create'}
                         </>
                      )}
                   </AlertDialogAction>
