@@ -10,12 +10,12 @@ import {
    TableHeader,
    TableRow,
 } from '@/components/ui/table';
-import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import { EmptyExpense } from './empty-expense';
 import { ExpenseCardDialog } from './expense-card-dialog';
 import { EditExpense } from './edit-expense';
-import { Edit, Loader2, Trash2 } from 'lucide-react';
+import { DeleteExpenseDialog } from './delete-expense-dialog';
+import { Loader2 } from 'lucide-react';
 
 import axios, { AxiosError } from 'axios';
 import { useAuth } from '@clerk/nextjs';
@@ -108,14 +108,11 @@ export const ExpenseTable = () => {
                      />
                   </TableCell>
                   <TableCell>
-                     <Button
-                        size='icon'
-                        variant='ghost'
-                        onClick={() => handleDelete(expense.id)}
-                        disabled={isDeleting}
-                     >
-                        <Trash2 className='h-5 w-5' />
-                     </Button>
+                     <DeleteExpenseDialog
+                        handleDelete={handleDelete}
+                        id={expense.id}
+                        isDeleting={isDeleting}
+                     />
                   </TableCell>
                </TableRow>
             ))}
