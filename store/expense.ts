@@ -76,7 +76,6 @@ export const useExpenseStore = create<ExpenseStore>((set) => ({
    fetchMonthExpenses: async (userId, month) => {
       try {
          const response = await axios.post<ApiResponse>('/api/get-month-expense', { userId, month });
-         console.log(response.data.expenses);
 
          set({
             expenses: response.data.expenses,
