@@ -23,7 +23,6 @@ export const TotalSpentCard = ({
                )}
             </p>
          </div>
-         {/* Dropdown */}
       </div>
    )
 };

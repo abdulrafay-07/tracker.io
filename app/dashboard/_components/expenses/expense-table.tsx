@@ -34,6 +34,7 @@ export const ExpenseTable = () => {
 
    useEffect(() => {
       if (!expensesFetched) {
+         setIsFetching(true);
          fetchUserExpenses(userId!);
       };
 

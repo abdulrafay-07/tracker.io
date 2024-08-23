@@ -7,20 +7,12 @@ import { ApiResponse } from '@/types/api-response';
 
 export const useExpenseStore = create<ExpenseStore>((set) => ({
    totalSpent: '0',
-   totalSpentFetched: false,
    expenses: [],
    expensesFetched: false,
-   fetchTotalSpent: async (userId) => {
-      try {
-         const response = await axios.post<ApiResponse>('/api/get-total-spent', { userId });
-
-         set({
-            totalSpent: response.data.totalSpent.toString(),
-            totalSpentFetched: true,
-         });
-      } catch (error) {
-         console.log('Failed to fetch total spent', error);
-      };
+   makeExpensesFetchedFalse: () => {
+      set({
+         expensesFetched: false,
+      });
    },
    addToTotalSpent: (expense: Expense) => {
       set((state) => {
@@ -47,6 +39,7 @@ export const useExpenseStore = create<ExpenseStore>((set) => ({
          set({
             expenses: response.data.expenses,
             expensesFetched: true,
+            totalSpent: response.data.totalSpent.toString(),
          });
       } catch (error) {
          console.log('Failed to fetch user expenses', error);
@@ -79,5 +72,19 @@ export const useExpenseStore = create<ExpenseStore>((set) => ({
             expenses: state.expenses,
          };
       });
+   },
+   fetchMonthExpenses: async (userId, month) => {
+      try {
+         const response = await axios.post<ApiResponse>('/api/get-month-expense', { userId, month });
+         console.log(response.data.expenses);
+
+         set({
+            expenses: response.data.expenses,
+            expensesFetched: true,
+            totalSpent: response.data.totalSpent.toString(),
+         });
+      } catch (error) {
+         console.log('Failed to fetch user monthly expenses', error);
+      };
    },
 }));

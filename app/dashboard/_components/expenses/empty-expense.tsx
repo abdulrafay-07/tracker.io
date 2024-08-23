@@ -12,9 +12,6 @@ export const EmptyExpense = () => {
          <h2 className='text-2xl font-semibold -mt-12'>
             No expenses found!
          </h2>
-         <p className='text-muted-foreground text-sm mt-2'>
-            Try creating an expense
-         </p>
       </div>
    )
 };

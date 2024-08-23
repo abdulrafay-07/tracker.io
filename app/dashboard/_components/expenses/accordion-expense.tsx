@@ -12,24 +12,17 @@ import { TotalSpentCard } from './total-spent-card';
 import { ExpenseCardDialog } from './expense-card-dialog';
 import { CreateExpenseCard } from './create-expense-card';
 
-import { useAuth } from '@clerk/nextjs';
 import { useExpenseStore } from '@/store/expense';
 
 export const AccordionExpense = () => {
    const [isFetching, setIsFetching] = useState(true);
-   const { totalSpent, totalSpentFetched, fetchTotalSpent } = useExpenseStore();
-
-   const { userId } = useAuth();
+   const { totalSpent, expensesFetched } = useExpenseStore();
 
    useEffect(() => {
-      if (!totalSpentFetched) {
-         fetchTotalSpent(userId!);
-      };
-      
-      if (totalSpentFetched) {
+      if (expensesFetched) {
          setIsFetching(false);
       };
-   }, [totalSpentFetched]);
+   }, [expensesFetched]);
 
    return (
       <Accordion type='single' collapsible className='w-full'>

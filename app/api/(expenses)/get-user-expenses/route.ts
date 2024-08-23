@@ -20,16 +20,20 @@ export async function POST(request: NextRequest) {
       if (expenses.length === 0) {
          return NextResponse.json({
             success: true,
-            message: 'No expenses found.'
+            message: 'No expenses found.',
+            totalSpent: 0,
          }, {
             status: 201,
          });
       };
 
+      const totalSpent = expenses.reduce((acc, expense) => acc + expense.amount, 0).toFixed(2);
+
       return NextResponse.json({
          success: true,
          message: 'Expenses found successfully.',
          expenses: expenses,
+         totalSpent: totalSpent,
       }, {
          status: 200,
       });
