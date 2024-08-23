@@ -57,6 +57,7 @@ export const ExpenseCardDialog = ({
          name: expense?.name || '',
          amount: expense?.amount || 0,
          createdAt: expense?.createdAt || new Date(),
+         month: expense?.month || '',
       },
    });
 

@@ -18,6 +18,7 @@ const createExpense = z.object({
       }),
    createdAt: z.date(),
    updatedAt: z.date().optional(),
+   month: z.string(),
 });
 
 export {

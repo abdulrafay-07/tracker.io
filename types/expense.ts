@@ -5,6 +5,7 @@ export interface Expense {
    amount: number;
    createdAt: Date;
    updatedAt: Date | null;
+   month: string;
 };
 
 export interface ExpenseStore {
