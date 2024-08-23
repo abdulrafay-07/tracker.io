@@ -12,6 +12,7 @@ export interface ExpenseStore {
    totalSpent: string;
    expenses: Expense[];
    expensesFetched: boolean;
+   monthlySpentData: {}[],
    makeExpensesFetchedFalse: () => void;
    addToTotalSpent: (expense: Expense) => void;
    removeFromTotalSpent: (expense: Expense) => void;

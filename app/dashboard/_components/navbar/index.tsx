@@ -34,7 +34,7 @@ export const Navbar = () => {
                 <SearchInput />
             </div>
             <div className='flex gap-x-8'>
-                {url.startsWith('/dashboard/') && (
+                {url === '/dashboard/expenses' && (
                     <Link
                         href='/dashboard'
                         className='hidden md:block'
@@ -44,6 +44,19 @@ export const Navbar = () => {
                             className='flex items-center gap-1'
                         >
                             Go to dashboard <ChevronRight className='h-4 w-4' />
+                        </Button>
+                    </Link>
+                )}
+                {url === '/dashboard/expenses/insights' && (
+                    <Link
+                        href='/dashboard/expenses'
+                        className='hidden md:block'
+                    >
+                        <Button
+                            size='sm'
+                            className='flex items-center gap-1'
+                        >
+                            Go to expenses <ChevronRight className='h-4 w-4' />
                         </Button>
                     </Link>
                 )}
