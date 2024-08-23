@@ -43,6 +43,7 @@ export const DeleteExpenseDialog = ({
             <AlertDialogFooter>
                <AlertDialogCancel>Cancel</AlertDialogCancel>
                <AlertDialogAction
+                  className='bg-destructive text-destructive-foreground hover:bg-destructive/90'
                   onClick={() => handleDelete(id)}
                   disabled={isDeleting}
                >
