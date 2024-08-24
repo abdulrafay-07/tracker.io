@@ -30,7 +30,7 @@ export const FeatureCard = ({
          }}
       >
          <div className='flex flex-col justify-between h-full'>
-            <h1 className='text-5xl font-bold'>
+            <h1 className='text-3xl lg:text-4xl font-bold'>
                {title}
             </h1>
             <span className='flex justify-end'>

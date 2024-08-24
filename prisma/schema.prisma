@@ -13,12 +13,29 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum JobStatus {
+  Pending
+  Accepted
+  Rejected
+}
+
 model Expenses {
   id        String @id @default(cuid())
   userId    String
   name      String
   amount    Float
   createdAt DateTime @default(now())
+  updatedAt DateTime? @updatedAt
+  month String
+}
+
+model Jobs {
+  id  String @id @default(cuid())
+  userId String
+  companyName String
+  position String
+  status JobStatus
+  applicationDate DateTime @default(now())
   updatedAt DateTime? @updatedAt
   month String
 }

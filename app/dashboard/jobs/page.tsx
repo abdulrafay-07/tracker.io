@@ -1,12 +1,11 @@
 import { MaxWithContainer } from '@/components/max-width-container';
-import { TotalSpentChart } from '../../_components/expenses/total-spent-chart';
 
-const Insights = () => {
+const Jobs = () => {
    return (
       <MaxWithContainer className='flex flex-col gap-y-10'>
-         <TotalSpentChart />
+         Jobs Page
       </MaxWithContainer>
    )
 };
 
-export default Insights;
+export default Jobs;
