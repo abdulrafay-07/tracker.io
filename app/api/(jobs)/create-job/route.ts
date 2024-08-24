@@ -7,36 +7,37 @@ const prisma = new PrismaClient();
 
 export async function POST(request: NextRequest) {
    try {
-      const { userId, name, amount, createdAt } = await request.json();
+      const { userId, companyName, position, status, applicationDate } = await request.json();
 
       // get month
-      const month = getMonth(new Date(createdAt));
+      const month = getMonth(new Date(applicationDate));
 
-      const newExpense = await prisma.expenses.create({
+      const newJob = await prisma.jobs.create({
          data: {
             userId,
-            name,
-            amount,
-            createdAt,
+            companyName,
+            position,
+            status,
+            applicationDate,
             month,
          },
       });
 
       return NextResponse.json({
          success: true,
-         message: 'Expense created successfully.',
-         expense: newExpense,
+         message: 'Job created successfully.',
+         job: newJob,
       }, {
          status: 200,
       });
    } catch (error) {
       return NextResponse.json({
          success: false,
-         message: 'Error creating an expense.',
+         message: 'Error creating a job application.',
       }, {
          status: 404,
       });
    } finally {
       await prisma.$disconnect();
    };
-}
+};

@@ -1,4 +1,5 @@
-import { Expense } from "./expense";
+import { Expense } from './expense';
+import { Job } from './job';
 
 export interface ApiResponse {
    success: boolean;
@@ -6,4 +7,6 @@ export interface ApiResponse {
    totalSpent: number;
    expense?: Expense;
    expenses?: Expense[];
+   job?: Job;
+   Jobs: Job[];
 };
