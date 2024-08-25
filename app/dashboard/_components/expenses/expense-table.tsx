@@ -11,10 +11,10 @@ import {
    TableRow,
 } from '@/components/ui/table';
 import { useToast } from '@/components/ui/use-toast';
-import { EmptyExpense } from './empty-expense';
+import { EmptyX } from '../empty-x';
 import { ExpenseCardDialog } from './expense-card-dialog';
 import { EditExpense } from './edit-expense';
-import { DeleteExpenseDialog } from './delete-expense-dialog';
+import { DeleteDialog } from '../delete-dialog';
 import { Loader2 } from 'lucide-react';
 
 import axios, { AxiosError } from 'axios';
@@ -22,6 +22,7 @@ import { useAuth } from '@clerk/nextjs';
 
 import { ApiResponse } from '@/types/api-response';
 import { useExpenseStore } from '@/store/expense';
+
 
 export const ExpenseTable = () => {
    const [isDeleting, setIsDeleting] = useState(false);
@@ -109,10 +110,11 @@ export const ExpenseTable = () => {
                      />
                   </TableCell>
                   <TableCell>
-                     <DeleteExpenseDialog
+                     <DeleteDialog
                         handleDelete={handleDelete}
                         id={expense.id}
                         isDeleting={isDeleting}
+                        feature='expense'
                      />
                   </TableCell>
                </TableRow>
@@ -120,6 +122,8 @@ export const ExpenseTable = () => {
          </TableBody>
       </Table>
    ) : (
-      <EmptyExpense />
+      <EmptyX
+         emptyMessage='No expenses found!'
+      />
    )
 };

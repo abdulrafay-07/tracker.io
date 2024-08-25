@@ -12,17 +12,19 @@ import {
 import { Button } from '@/components/ui/button';
 import { Trash2 } from 'lucide-react';
 
-interface DeleteExpenseDialog {
+interface DeleteDialogProps {
    handleDelete: (id: string) => void;
    id: string;
    isDeleting: boolean;
+   feature: string;
 };
 
-export const DeleteExpenseDialog = ({
+export const DeleteDialog = ({
    handleDelete,
    id,
    isDeleting,
-}: DeleteExpenseDialog) => {
+   feature,
+}: DeleteDialogProps) => {
    return (
       <AlertDialog>
          <AlertDialogTrigger asChild>
@@ -30,14 +32,14 @@ export const DeleteExpenseDialog = ({
                size='icon'
                variant='ghost'
             >
-               <Trash2 className='h-5 w-5' />
+               <Trash2 className='h-5 w-5 text-red-500 hover:text-red-600' />
             </Button>
          </AlertDialogTrigger>
          <AlertDialogContent>
             <AlertDialogHeader>
-               <AlertDialogTitle>Are you sure you want to delete this expense?</AlertDialogTitle>
+               <AlertDialogTitle>Are you sure you want to delete this {feature}?</AlertDialogTitle>
                <AlertDialogDescription>
-                  This action cannot be undone. This will permanently delete the expense.
+                  This action cannot be undone. This will permanently delete the {feature}.
                </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>

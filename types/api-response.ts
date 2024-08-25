@@ -8,5 +8,5 @@ export interface ApiResponse {
    expense?: Expense;
    expenses?: Expense[];
    job?: Job;
-   Jobs: Job[];
+   jobs?: Job[];
 };

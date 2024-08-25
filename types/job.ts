@@ -11,3 +11,14 @@ export interface Job {
    updatedAt: Date | null;
    month: string;
 };
+
+export interface JobStore {
+   jobs: Job[];
+   jobsFetched: boolean;
+   jobsFromSearch: Job[];
+   fetchJobs: (userId: string) => void;
+   addToJobs: (job: Job) => void;
+   removeFromJobs: (job: Job) => void;
+   updateJob: (job: Job) => void;
+   getJobsFromSearch: (query: string) => void;
+};

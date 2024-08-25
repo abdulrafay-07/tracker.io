@@ -38,7 +38,7 @@ export const SearchInput = () => {
                 className='absolute top-1/2 right-3 transform -translate-y-1/2 text-muted-foreground h-5 w-5 cursor-pointer'
             />
             <Input
-                placeholder='Search...'
+                placeholder={`${path === '/dashboard' ? 'Search...' : 'Filter using data, e.g., Name'}`}
                 onChange={handleChange}
             />
         </div>

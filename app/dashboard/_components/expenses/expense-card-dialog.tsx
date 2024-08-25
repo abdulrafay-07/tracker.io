@@ -133,7 +133,7 @@ export const ExpenseCardDialog = ({
 
    return (
       <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-         <AlertDialogTrigger>
+         <AlertDialogTrigger asChild>
             <TriggerComponent />
          </AlertDialogTrigger>
          <AlertDialogContent className='max-w-xl'>

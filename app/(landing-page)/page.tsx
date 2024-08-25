@@ -22,8 +22,8 @@ const Home = () => {
             <span className='font-bold'>tracker.io</span> is an all-in-one tracking software designed to simplify your life by bringing all your tracking needs under one roof. Whether you&apos;re managing your finances, keeping track of job tasks, or monitoring your fitness journey, we have you covered.
           </p>
           <Link href='/sign-up' className='mt-4'>
-            <Button variant='theme' size='lg'>
-              Join Now!
+            <Button size='lg'>
+              Join Now
             </Button>
           </Link>
         </div>

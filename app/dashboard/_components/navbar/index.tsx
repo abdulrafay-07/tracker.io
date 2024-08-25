@@ -8,7 +8,7 @@ import { UserButton } from '@clerk/nextjs';
 
 import { SearchInput } from './search-input';
 import { Button } from '@/components/ui/button';
-import { ChevronRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 export const Navbar = () => {
     const url = usePathname();
@@ -34,7 +34,7 @@ export const Navbar = () => {
                 <SearchInput />
             </div>
             <div className='flex gap-x-8'>
-                {url === '/dashboard/expenses' && (
+                {(url === '/dashboard/expenses' || url === '/dashboard/jobs') && (
                     <Link
                         href='/dashboard'
                         className='hidden md:block'
@@ -43,7 +43,7 @@ export const Navbar = () => {
                             size='sm'
                             className='flex items-center gap-1'
                         >
-                            Go to dashboard <ChevronRight className='h-4 w-4' />
+                            Go to dashboard <ArrowRight className='h-4 w-4' />
                         </Button>
                     </Link>
                 )}
@@ -56,7 +56,7 @@ export const Navbar = () => {
                             size='sm'
                             className='flex items-center gap-1'
                         >
-                            Go to expenses <ChevronRight className='h-4 w-4' />
+                            Go to expenses <ArrowRight className='h-4 w-4' />
                         </Button>
                     </Link>
                 )}

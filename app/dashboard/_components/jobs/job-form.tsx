@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -12,6 +12,7 @@ import { cn } from '@/lib/utils';
 
 import { createJob } from '@/form-schemas/jobs';
 import { ApiResponse } from '@/types/api-response';
+import { useJobStore } from '@/store/job';
 
 import {
    Form,
@@ -39,8 +40,12 @@ import { Calendar } from '@/components/ui/calendar';
 import { useToast } from '@/components/ui/use-toast';
 import { CalendarIcon, Loader2 } from 'lucide-react';
 
-export const JobForm = () => {
+export const JobForm = ({
+   setIsOpen,
+}: { setIsOpen: Dispatch<SetStateAction<string | undefined>> }) => {
    const [isSubmitting, setIsSubmitting] = useState(false);
+
+   const { addToJobs } = useJobStore();
 
    const { userId } = useAuth();
    const { toast } = useToast();
@@ -65,6 +70,9 @@ export const JobForm = () => {
             title: 'Success!',
             description: response.data.message,
          });
+
+         addToJobs(response.data.job!);
+         setIsOpen(undefined);
       } catch (error) {
          console.log(error);
          const axiosError = error as AxiosError<ApiResponse>;
