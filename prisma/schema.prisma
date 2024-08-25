@@ -35,6 +35,7 @@ model Jobs {
   companyName String
   position String
   status JobStatus
+  createdAt DateTime @default(now())
   applicationDate DateTime @default(now())
   updatedAt DateTime? @updatedAt
   month String

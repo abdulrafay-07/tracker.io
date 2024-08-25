@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
             userId: userId,
          },
          orderBy: {
-            applicationDate: 'desc',
+            createdAt: 'desc',
          },
       });
 

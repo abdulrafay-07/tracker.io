@@ -6,6 +6,7 @@ export interface Job {
    companyName: string;
    position: string;
    status: JobStatus;
+   createdAt: Date;
    applicationDate: Date;
    updatedAt: Date | null;
    month: string;
