@@ -17,6 +17,7 @@ import {
    TableRow,
 } from '@/components/ui/table';
 import { useToast } from '@/components/ui/use-toast';
+import { EditJobDialog } from './edit-job-dialog';
 import { DeleteDialog } from '../delete-dialog';
 import { EmptyX } from '../empty-x';
 import { Loader2 } from 'lucide-react';
@@ -79,7 +80,7 @@ export const JobsTable = ({
       return <Loader2 className='h-10 w-10 animate-spin self-center my-10' />
    };
 
-   if (jobs.length === 0) {
+   if (jobs.length === 0 || (query && jobsFromSearch.length === 0)) {
       return (
          <EmptyX
             emptyMessage='No jobs found!'
@@ -121,7 +122,11 @@ export const JobsTable = ({
                            {job.status}
                         </TableCell>
                         <TableCell className='font-semibold'>
-                           Edit
+                           <EditJobDialog
+                              job={job}
+                              title='Edit a job application'
+                              description='Update a job application here. Click update when you&apos;re done.'
+                           />
                         </TableCell>
                         <TableCell className='font-semibold'>
                            <DeleteDialog
@@ -153,10 +158,19 @@ export const JobsTable = ({
                            {job.status}
                         </TableCell>
                         <TableCell className='font-semibold'>
-                           Edit
+                           <EditJobDialog
+                              job={job}
+                              title='Edit a job application'
+                              description='Update a job application here. Click update when you&apos;re done.'
+                           />
                         </TableCell>
                         <TableCell className='font-semibold'>
-                           Delete
+                           <DeleteDialog
+                              handleDelete={handleDelete}
+                              id={job.id}
+                              isDeleting={isDeleting}
+                              feature='job application'
+                           />
                         </TableCell>
                      </TableRow>
                   ))

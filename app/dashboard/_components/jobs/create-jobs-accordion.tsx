@@ -11,7 +11,7 @@ import {
 import { JobForm } from './job-form';
 
 export const CreateJobsAccordion = () => {
-   const [isOpen, setIsOpen] = useState<string | undefined>('item-1');
+   const [isOpen, setIsOpen] = useState<string | undefined>(undefined);
 
    return (
       <Accordion

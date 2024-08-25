@@ -37,7 +37,23 @@ export const useJobStore = create<JobStore>((set) => ({
       });
    },
    updateJob: (job: Job) => {
-      // implement later
+      set((state) => {
+         const index = state.jobs.findIndex(storeJob => storeJob.id = job.id);
+         
+         if (!index) {
+            state.jobs[index] = { ...state.jobs[index], 
+               companyName: job.companyName,
+               position: job.position,
+               status: job.status,
+               applicationDate: job.applicationDate,
+               month: job.month
+            };
+         };
+
+         return {
+            jobs: state.jobs,
+         };
+      });
    },
    getJobsFromSearch: (query) => {
       set((state) => {
