@@ -5,13 +5,41 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 import { UserButton } from '@clerk/nextjs';
+import { cn } from '@/lib/utils';
 
 import { SearchInput } from './search-input';
-import { Button } from '@/components/ui/button';
+import { buttonVariants } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 
 export const Navbar = () => {
     const url = usePathname();
+
+    // mapping of URL to button label and target link
+    const buttonConfig = [
+        {
+            key: '/dashboard/expenses/insights',
+            label: 'Go to expenses',
+            href: '/dashboard/expenses',
+        },
+        {
+            key: '/dashboard/jobs/analytics',
+            label: 'Go to job applications',
+            href: '/dashboard/jobs',
+        },
+        {
+            key: '/dashboard/expenses',
+            label: 'Go to dashboard',
+            href: '/dashboard',
+        },
+        {
+            key: '/dashboard/jobs',
+            label: 'Go to dashboard',
+            href: '/dashboard',
+        },
+    ];
+
+    // find the matching button configuration based on the URL
+    const buttonProps = buttonConfig.find(({ key }) => url.startsWith(key));
 
     return (
         <div className='flex justify-between items-center gap-x-4 p-4'>
@@ -34,30 +62,14 @@ export const Navbar = () => {
                 <SearchInput />
             </div>
             <div className='flex gap-x-8'>
-                {(url === '/dashboard/expenses' || url === '/dashboard/jobs') && (
+                {buttonProps && (
                     <Link
-                        href='/dashboard'
-                        className='hidden md:block'
+                        href={buttonProps.href}
+                        className={cn('hidden md:flex items-center gap-x-1',
+                            buttonVariants({ size: 'sm' })
+                        )}
                     >
-                        <Button
-                            size='sm'
-                            className='flex items-center gap-1'
-                        >
-                            Go to dashboard <ArrowRight className='h-4 w-4' />
-                        </Button>
-                    </Link>
-                )}
-                {url === '/dashboard/expenses/insights' && (
-                    <Link
-                        href='/dashboard/expenses'
-                        className='hidden md:block'
-                    >
-                        <Button
-                            size='sm'
-                            className='flex items-center gap-1'
-                        >
-                            Go to expenses <ArrowRight className='h-4 w-4' />
-                        </Button>
+                        {buttonProps.label} <ArrowRight className='h-4 w-4' />
                     </Link>
                 )}
                 <UserButton

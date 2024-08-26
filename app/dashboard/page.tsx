@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { FeaturedCards } from '@/types/cards';
 import { featureCards } from '@/lib/feature-cards';
 
-import { MaxWithContainer } from '@/components/max-width-container';
+import { MaxWidthContainer } from '@/components/max-width-container';
 import { FeatureCard } from './_components/feature-card';
 import { EmptySearch } from './_components/empty-search';
 
@@ -40,7 +40,7 @@ const Dashboard = ({
     };
 
     return (
-        <MaxWithContainer>
+        <MaxWidthContainer>
             <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6 xl:gap-8'>
                 {cards.map((card) => (
                     <FeatureCard
@@ -50,7 +50,7 @@ const Dashboard = ({
                     />
                 ))}
             </div>
-        </MaxWithContainer>
+        </MaxWidthContainer>
     )
 };
 

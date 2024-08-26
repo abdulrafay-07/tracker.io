@@ -108,7 +108,6 @@ export const EditJobDialog = ({
             variant: 'destructive',
          });
       } finally {
-         form.reset();
          setIsUpdating(false);
       };
    };

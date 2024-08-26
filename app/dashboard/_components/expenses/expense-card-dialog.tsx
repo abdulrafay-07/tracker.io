@@ -46,7 +46,7 @@ export const ExpenseCardDialog = ({
    const [isSubmitting, setIsSubmitting] = useState(false);
    const { userId } = useAuth();
 
-   const { addToTotalSpent, addToUserExpense, fetchUserExpenses } = useExpenseStore();
+   const { addToTotalSpent, addToUserExpense, updateUserExpense } = useExpenseStore();
 
    const { toast } = useToast();
 
@@ -116,7 +116,7 @@ export const ExpenseCardDialog = ({
             description: response.data.message,
          });
 
-         fetchUserExpenses(userId!);
+         updateUserExpense(response.data.expense!);
       } catch (error) {
          console.log(error);
          const axiosError = error as AxiosError<ApiResponse>;
@@ -133,7 +133,7 @@ export const ExpenseCardDialog = ({
 
    return (
       <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-         <AlertDialogTrigger asChild>
+         <AlertDialogTrigger>
             <TriggerComponent />
          </AlertDialogTrigger>
          <AlertDialogContent className='max-w-xl'>

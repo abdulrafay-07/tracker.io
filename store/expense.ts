@@ -92,13 +92,15 @@ export const useExpenseStore = create<ExpenseStore>((set) => ({
       set((state) => {
          const index = state.expenses.findIndex(exp => exp.id = expense.id);
          
-         if (!index) {
-            state.expenses[index] = { ...state.expenses[index], name: expense.name, amount: expense.amount}
+         if (index !== 1) {
+            state.expenses[index] = { ...state.expenses[index], name: expense.name, amount: expense.amount};
+
+            return {
+               expenses: state.expenses,
+            };
          };
 
-         return {
-            expenses: state.expenses,
-         };
+         return state;
       });
    },
    fetchMonthExpenses: async (userId, month) => {

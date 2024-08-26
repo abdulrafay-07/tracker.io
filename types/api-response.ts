@@ -9,4 +9,8 @@ export interface ApiResponse {
    expenses?: Expense[];
    job?: Job;
    jobs?: Job[];
+   statusArr: {
+      name: string;
+      total: number;
+   }[];
 };

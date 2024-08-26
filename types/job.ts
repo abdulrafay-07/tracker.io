@@ -16,6 +16,10 @@ export interface JobStore {
    jobs: Job[];
    jobsFetched: boolean;
    jobsFromSearch: Job[];
+   statusData: {
+      name: string;
+      total: number;
+   }[];
    fetchJobs: (userId: string) => void;
    addToJobs: (job: Job) => void;
    removeFromJobs: (job: Job) => void;
