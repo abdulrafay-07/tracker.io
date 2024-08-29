@@ -4,6 +4,7 @@ import axios from 'axios';
 
 import { Job, JobStore } from '@/types/job';
 import { ApiResponse } from '@/types/api-response';
+import { addToAreaChart, addToJobStatus, removeFromAreaChart, removeFromJobStatus, updateAreaChart, updateStatusData } from '@/lib/job-store';
 
 export const useJobStore = create<JobStore>((set) => ({
    jobs: [],
@@ -27,40 +28,36 @@ export const useJobStore = create<JobStore>((set) => ({
    },
    addToJobs: (job: Job) => {
       set((state) => {
-         const newJobStatus = job.status;
+         const jobStatus = job.status;
 
-         const updatedStatusData = [...state.statusData];
+         // adds the newest job status to statusArr (without having to call database)
+         const updatedStatusData = addToJobStatus(state, jobStatus);
 
-         const statusIndex = updatedStatusData.findIndex(status => status.name === newJobStatus);
-
-         updatedStatusData[statusIndex] = {
-            ...updatedStatusData[statusIndex],
-            total: updatedStatusData[statusIndex].total + 1,
-         };
+         // adds the newest job data to areaChart (without having to call database)
+         const updatedAreaChartData = addToAreaChart(state, jobStatus, job.month);
 
          const currentJobs = Array.isArray(state.jobs) ? state.jobs : [];
          return {
             jobs: [job, ...currentJobs],
             statusData: updatedStatusData,
+            areaChart: updatedAreaChartData,
          };
       });
    },
    removeFromJobs: (job: Job) => {
       set((state) => {
-         const removedJobStatus = job.status;
+         const jobStatus = job.status;
 
-         const updatedStatusData = [...state.statusData];
+         // removes the deleted job status from statusArr (without having to call database)
+         const updatedStatusData = removeFromJobStatus(state, jobStatus);
 
-         const statusIndex = updatedStatusData.findIndex(status => status.name === removedJobStatus);
-
-         updatedStatusData[statusIndex] = {
-            ...updatedStatusData[statusIndex],
-            total: updatedStatusData[statusIndex].total - 1,
-         };
+         // removes the deleted job data from areaChart (without having to call database)
+         const updatedAreaChartData = removeFromAreaChart(state, jobStatus, job.month);
 
          return {
             jobs: state.jobs.filter((storeJob) => storeJob.id != job.id),
             statusData: updatedStatusData,
+            areaChart: updatedAreaChartData,
          };
       });
    },
@@ -71,12 +68,11 @@ export const useJobStore = create<JobStore>((set) => ({
          const index = state.jobs.findIndex(storeJob => storeJob.id === job.id);
          
          if (index !== -1) {
-
+            // if status hasnt changed, we just simply update any other data and return it
             if (state.jobs[index].status === jobStatus) {
                state.jobs[index] = { ...state.jobs[index], 
                   companyName: job.companyName,
                   position: job.position,
-                  status: job.status,
                   applicationDate: job.applicationDate,
                   month: job.month
                };
@@ -86,24 +82,14 @@ export const useJobStore = create<JobStore>((set) => ({
                };
             };
 
-            const updatedStatusData = [...state.statusData];
+            // update the statusArr without calling the database
+            const updatedStatusData = updateStatusData(state, jobStatus, index);
 
-            const incrementStatusIndex = updatedStatusData.findIndex(status => status.name === jobStatus);
-            const decrementStatusIndex = state.statusData.findIndex(status => status.name === state.jobs[index].status)
+            // update the areaChart without calling the database
+            const updatedAreaChartData = updateAreaChart(state, state.jobs[index].status, jobStatus, job.month, index);
 
-            // this will increment the status
-            updatedStatusData[incrementStatusIndex] = {
-               ...updatedStatusData[incrementStatusIndex],
-               total: updatedStatusData[incrementStatusIndex].total + 1,
-            };
-            
-            // this will decrement the status
-            updatedStatusData[decrementStatusIndex] = {
-               ...updatedStatusData[decrementStatusIndex],
-               total: updatedStatusData[decrementStatusIndex].total - 1,
-            };
-
-            state.jobs[index] = { ...state.jobs[index], 
+            state.jobs[index] = {
+               ...state.jobs[index], 
                companyName: job.companyName,
                position: job.position,
                status: job.status,
@@ -114,6 +100,7 @@ export const useJobStore = create<JobStore>((set) => ({
             return {
                jobs: state.jobs,
                statusData: updatedStatusData,
+               areaChart: updatedAreaChartData,
             }
          };
 
