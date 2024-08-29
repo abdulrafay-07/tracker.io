@@ -20,6 +20,12 @@ export interface JobStore {
       name: string;
       total: number;
    }[];
+   areaChart: {
+      month: string;
+      accepted: number;
+      rejected: number;
+      pending: number;
+   }[],
    fetchJobs: (userId: string) => void;
    addToJobs: (job: Job) => void;
    removeFromJobs: (job: Job) => void;

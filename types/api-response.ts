@@ -13,4 +13,10 @@ export interface ApiResponse {
       name: string;
       total: number;
    }[];
+   areaChart: {
+      month: string;
+      accepted: number;
+      rejected: number;
+      pending: number;
+   }[];
 };

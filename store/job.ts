@@ -10,6 +10,7 @@ export const useJobStore = create<JobStore>((set) => ({
    jobsFetched: false,
    jobsFromSearch: [],
    statusData: [],
+   areaChart: [],
    fetchJobs: async (userId) => {
       try {
          const response = await axios.post<ApiResponse>('/api/get-jobs', { userId });
@@ -17,7 +18,8 @@ export const useJobStore = create<JobStore>((set) => ({
          set({
             jobs: response.data.jobs,
             jobsFetched: true,
-            statusData: response.data.statusArr
+            statusData: response.data.statusArr,
+            areaChart: response.data.areaChart,
          });
       } catch (error) {
          console.log('Failed to fetch user job applications', error);

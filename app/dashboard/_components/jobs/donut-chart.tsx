@@ -1,7 +1,5 @@
 'use client'
 
-import { useEffect, useState } from 'react';
-
 import {
    Label,
    Pie,
@@ -13,11 +11,15 @@ import {
    ChartTooltip,
    ChartTooltipContent,
 } from '@/components/ui/chart';
-import { Loader2 } from 'lucide-react';
+import {
+   Card,
+   CardContent,
+   CardDescription,
+   CardHeader,
+   CardTitle,
+} from '@/components/ui/card';
 
-import { useAuth } from '@clerk/nextjs';
-
-import { useJobStore } from '@/store/job';
+import { Job } from '@/types/job';
 
 const chartConfig = {
    totalJobs: {
@@ -45,14 +47,17 @@ type StatusKey = keyof typeof chartConfig;
 interface StatusDataItem {
    name: string;
    total: number;
-}
+};
 
-export const DonutChart = () => {
-   const [isLoading, setIsLoading] = useState(true);
-   const { statusData, jobs, jobsFetched, fetchJobs } = useJobStore();
+interface DonutChartProps {
+   jobs: Job[];
+   statusData: StatusDataItem[];
+};
 
-   const { userId } = useAuth();
-
+export const DonutChart = ({
+   jobs,
+   statusData,
+}: DonutChartProps) => {
    // map the chartConfig colors to the statusData (gpt)
    const dataWithColors = statusData.map((item: StatusDataItem) => {
       const key = item.name.toLowerCase() as StatusKey;
@@ -62,78 +67,62 @@ export const DonutChart = () => {
       };
    });
 
-   useEffect(() => {
-      if (!jobsFetched) {
-         fetchJobs(userId!);
-      };
-
-      if (jobsFetched) {
-         setIsLoading(false)
-      };
-   }, [jobsFetched]);
-
-   if (isLoading) {
-      return (
-         <div className='h-full w-full flex justify-center items-center pt-32'>
-            <Loader2 className='h-10 w-10 animate-spin' />
-         </div>
-      )
-   };
-
    return (
-      <div className='flex flex-col gap-y-2 h-full'>
-         <div className='flex items-center gap-x-3'>
-            <h1 className='text-2xl md:text-3xl font-semibold text-center'>Donut Chart</h1>
-            <p className='text-muted-foreground mt-1'>jobs status total</p>
-         </div>
-         <ChartContainer
-            config={chartConfig}
-            className='aspect-square max-h-[300px]'
-         >
-            <PieChart>
-               <ChartTooltip
-                  cursor={false}
-                  content={<ChartTooltipContent hideLabel />}
-               />
-               <Pie
-                  data={dataWithColors}
-                  dataKey='total'
-                  nameKey='name'
-                  innerRadius={60}
-                  strokeWidth={5}
-               >
-                  <Label
-                     content={({ viewBox }) => {
-                        if (viewBox && 'cx' in viewBox && 'cy' in viewBox) {
-                           return (
-                              <text
-                                 x={viewBox.cx}
-                                 y={viewBox.cy}
-                                 textAnchor='middle'
-                                 dominantBaseline='middle'
-                              >
-                                 <tspan
+      <Card className='flex flex-col gap-y-2 w-full lg:w-1/3 lg:justify-center'>
+         <CardHeader className='flex items-center'>
+            <CardTitle>Donut Chart</CardTitle>
+            <CardDescription>total jobs</CardDescription>
+         </CardHeader>
+         <CardContent>
+            <ChartContainer
+               config={chartConfig}
+               className='aspect-square max-h-[300px] w-full'
+            >
+               <PieChart>
+                  <ChartTooltip
+                     cursor={false}
+                     content={<ChartTooltipContent hideLabel />}
+                  />
+                  <Pie
+                     data={dataWithColors}
+                     dataKey='total'
+                     nameKey='name'
+                     innerRadius={60}
+                     strokeWidth={5}
+                  >
+                     <Label
+                        content={({ viewBox }) => {
+                           if (viewBox && 'cx' in viewBox && 'cy' in viewBox) {
+                              return (
+                                 <text
                                     x={viewBox.cx}
                                     y={viewBox.cy}
-                                    className='fill-foreground text-3xl font-bold'
+                                    textAnchor='middle'
+                                    dominantBaseline='middle'
                                  >
-                                    {jobs.length}
-                                 </tspan>
                                     <tspan
-                                    x={viewBox.cx}
-                                    y={(viewBox.cy || 0) + 24}
-                                    className='fill-muted-foreground'
+                                       x={viewBox.cx}
+                                       y={viewBox.cy}
+                                       className='fill-foreground text-3xl font-bold'
                                     >
-                                    Jobs Total
-                                 </tspan>
-                              </text>
-                           )
-                        }
-                     }}
-                  />
-               </Pie>
-            </PieChart>
-         </ChartContainer>
-      </div>
+                                       {jobs.length}
+                                    </tspan>
+                                       <tspan
+                                       x={viewBox.cx}
+                                       y={(viewBox.cy || 0) + 24}
+                                       className='fill-muted-foreground'
+                                       >
+                                       Jobs Total
+                                    </tspan>
+                                 </text>
+                              )
+                           }
+                        }}
+                     />
+                  </Pie>
+               </PieChart>
+            </ChartContainer>
+         </CardContent>
+      </Card>
    )
 };
